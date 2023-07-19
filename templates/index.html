@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hava Durumu</title>
+</head>
+<body>
+    <h1>Hava Durumu Bilgisi</h1>
+    <form id="weatherForm" action="/" method="POST">
+        <label for="city">Şehir adını girin:</label>
+        <input type="text" id="city" name="city" required>
+        <button type="submit">Hava Durumu Göster</button>
+    </form>
+    <div id="weatherInfo"></div>
+
+    <script>
+        document.getElementById("weatherForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const city = formData.get("city");
+
+            fetch("/", {
+                method: "POST",
+                body: new URLSearchParams(formData),
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                let weatherInfoDiv = document.getElementById("weatherInfo");
+                weatherInfoDiv.innerHTML = `Şehir: ${data.city}<br>Hava Durumu: ${data.weather_info}`;
+                console.log(data)
+            })
+            .catch(error => {
+                console.error("Hata oluştu:", error);
+            });
+        });
+    </script>
+
+    
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
